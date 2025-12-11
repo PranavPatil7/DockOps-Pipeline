@@ -1,0 +1,49 @@
+---
+# DevOps Stack Configuration Template
+# 
+# SETUP INSTRUCTIONS:
+# 1. Copy this file: cp group_vars/vault.yml.example group_vars/vault.yml
+# 2. Edit with your values: nano group_vars/vault.yml
+# 3. Encrypt the file: ansible-vault encrypt group_vars/vault.yml
+# 4. To edit later: ansible-vault edit group_vars/vault.yml
+
+# Project Configuration
+vault_project_name: "my-devops-stack"           # e.g., "acme-devops", "company-ci"
+vault_organization: "My Company"                # e.g., "ACME Corp", "Startup Inc"
+vault_environment: "production"                 # e.g., "production", "staging", "dev"
+
+# Domain configuration - Replace with your actual domain
+vault_domain: "your-domain.com"                 # e.g., "mycompany.com"
+vault_ssl_email: "admin@your-domain.com"        # e.g., "admin@mycompany.com"
+
+# Service passwords - GENERATE SECURE PASSWORDS
+# Use: openssl rand -base64 32 | tr -d "=+/" | cut -c1-25
+vault_traefik_admin_password: "GENERATE_SECURE_PASSWORD_HERE"
+vault_jenkins_admin_password: "GENERATE_SECURE_PASSWORD_HERE"
+
+# Database credentials - GENERATE SECURE PASSWORDS  
+vault_db_password: "GENERATE_SECURE_DB_PASSWORD_HERE"
+vault_db_root_password: "GENERATE_SECURE_ROOT_PASSWORD_HERE"
+
+# Resource Limits (optional - uncomment to override defaults)
+# vault_traefik_cpu_limit: "0.5"
+# vault_traefik_memory_limit: "512m"
+# vault_mattermost_cpu_limit: "1.0"
+# vault_mattermost_memory_limit: "2g"
+# vault_jenkins_cpu_limit: "2.0"
+# vault_jenkins_memory_limit: "2g"
+
+# Security Configuration (optional - uncomment to override defaults)
+# vault_firewall_enabled: true
+# vault_fail2ban_enabled: true
+# vault_auto_updates_enabled: true
+
+# Backup Configuration (optional)
+# vault_backup_enabled: false
+# vault_backup_schedule: "0 2 * * *"  # Daily at 2 AM
+# vault_backup_retention: 30          # Keep backups for 30 days
+
+# Monitoring Configuration (optional)
+# vault_monitoring_enabled: false
+# vault_slack_webhook_url: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+# vault_email_notifications: "admin@your-domain.com"

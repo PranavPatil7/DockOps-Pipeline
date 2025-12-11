@@ -1,0 +1,75 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:2.504.3-lts
+    container_name: "{{ project.name }}-jenkins"
+    restart: unless-stopped
+    user: root
+    networks:
+      - "{{ docker_network }}"
+    volumes:
+      - "{{ project.name }}_jenkins_data:/var/jenkins_home"
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+    environment:
+      - JENKINS_OPTS="--httpPort={{ services.jenkins.port }}"
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ services.jenkins.cpu_limit }}"
+          memory: "{{ services.jenkins.memory_limit }}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`{{ subdomains.jenkins }}`)"
+      - "traefik.http.routers.jenkins.entrypoints=websecure"
+      - "traefik.http.routers.jenkins.tls.certresolver=myresolver"
+      - "traefik.http.services.jenkins.loadbalancer.server.port={{ services.jenkins.port }}"
+
+  mattermost:
+    image: mattermost/mattermost-team-edition:10.9.1
+    container_name: "{{ project.name }}-mattermost"
+    restart: unless-stopped
+    networks:
+      - "{{ docker_network }}"
+    volumes:
+      - "{{ project.name }}_mattermost_config:/mattermost/config"
+      - "{{ project.name }}_mattermost_data:/mattermost/data"
+      - "{{ project.name }}_mattermost_logs:/mattermost/logs"
+    environment:
+      - MM_SQLSETTINGS_DATASOURCE=postgres://admin:{{ postgres_admin_password }}@{{ project.name }}-postgres:5432/mattermost?sslmode=disable
+      - MM_SERVICESETTINGS_SITEURL=https://{{ subdomains.mattermost }}
+      - MM_TEAMSETTINGS_SITENAME={{ project.organization }}
+    deploy:
+      resources:
+        limits:
+          cpus: "{{ services.mattermost.cpu_limit }}"
+          memory: "{{ services.mattermost.memory_limit }}"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mattermost.rule=Host(`{{ subdomains.mattermost }}`)"
+      - "traefik.http.routers.mattermost.entrypoints=websecure"
+      - "traefik.http.routers.mattermost.tls.certresolver=myresolver"
+
+  postgres:
+    image: postgres:17.5-alpine
+    container_name: "{{ project.name }}-postgres"
+    restart: unless-stopped
+    networks:
+      - "{{ docker_network }}"
+    volumes:
+      - "{{ project.name }}_postgres_data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD={{ postgres_admin_password }}
+      - POSTGRES_DB=mattermost
+
+networks:
+  "{{ docker_network }}":
+    external: true
+
+volumes:
+  "{{ project.name }}_jenkins_data":
+  "{{ project.name }}_mattermost_config":
+  "{{ project.name }}_mattermost_data":
+  "{{ project.name }}_mattermost_logs":
+  "{{ project.name }}_postgres_data":

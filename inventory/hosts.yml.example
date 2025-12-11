@@ -1,0 +1,11 @@
+---
+all:
+  children:
+    devops_servers:
+      hosts:
+        nusatech-devops:
+          ansible_host: YOUR_SERVER_IP              # Replace with your server IP (e.g., 192.168.1.100)
+          ansible_user: YOUR_SSH_USER               # Replace with your SSH username (e.g., admin, ubuntu)
+          ansible_ssh_private_key_file: ~/.ssh/YOUR_SSH_KEY  # Replace with your SSH key path
+      vars:
+        ansible_python_interpreter: /usr/bin/python3

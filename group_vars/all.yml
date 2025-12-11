@@ -1,0 +1,60 @@
+---
+# Dynamic DevOps Stack Configuration
+# Project configuration - dapat disesuaikan per deployment
+project:
+  name: "{{ vault_project_name | default('devops-stack') }}"
+  organization: "{{ vault_organization | default('your-company') }}"
+  environment: "{{ vault_environment | default('production') }}"
+
+# Network configuration
+docker_network: "{{ project.name }}_network"
+
+# Base directories
+base_dir: "/opt/{{ project.name }}"
+data_dir: "{{ base_dir }}/data"
+config_dir: "{{ base_dir }}/config" 
+logs_dir: "{{ base_dir }}/logs"
+
+# Domain configuration (from vault) - DYNAMIC
+domain: "{{ vault_domain | default('example.com') }}"
+use_ssl: true
+ssl_email: "{{ vault_ssl_email | default('admin@example.com') }}"
+
+# Subdomains for services - DYNAMIC
+subdomains:
+  traefik: "traefik.{{ domain }}"
+  mattermost: "chat.{{ domain }}"
+  jenkins: "cicd.{{ domain }}"
+
+# Resource allocation (configurable)
+services:
+  traefik:
+    dashboard_port: 8080
+    cpu_limit: "{{ vault_traefik_cpu_limit | default('0.5') }}"
+    memory_limit: "{{ vault_traefik_memory_limit | default('512m') }}"
+
+  mattermost:
+    port: 8065
+    cpu_limit: "{{ vault_mattermost_cpu_limit | default('1.0') }}"
+    memory_limit: "{{ vault_mattermost_memory_limit | default('2g') }}"
+
+  jenkins:
+    port: 8080
+    cpu_limit: "{{ vault_jenkins_cpu_limit | default('2.0') }}"
+    memory_limit: "{{ vault_jenkins_memory_limit | default('2g') }}"
+
+# Passwords (from vault) - SECURE REFERENCES
+traefik_admin_password: "{{ vault_traefik_admin_password }}"
+jenkins_admin_password: "{{ vault_jenkins_admin_password }}"
+postgres_admin_password: "{{ vault_db_password }}"
+
+# Security settings
+firewall_enabled: "{{ vault_firewall_enabled | default(true) }}"
+fail2ban_enabled: "{{ vault_fail2ban_enabled | default(true) }}"
+auto_updates_enabled: "{{ vault_auto_updates_enabled | default(true) }}"
+
+# Backup configuration
+backup:
+  enabled: "{{ vault_backup_enabled | default(false) }}"
+  schedule: "{{ vault_backup_schedule | default('0 2 * * *') }}"
+  retention_days: "{{ vault_backup_retention | default(30) }}"
