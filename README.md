@@ -1,4 +1,4 @@
-# Professional DevOps Stack
+# DockOps Pipeline – Professional DevOps Stack                                                                        
 ### Complete Infrastructure Automation Platform
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -611,25 +611,3 @@ We welcome contributions! Please follow these guidelines:
 - Include error handling
 
 ---
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Security Focus**: Built with security-first principles
-- **Community**: Thanks to the open-source community for the underlying technologies
-- **Best Practices**: Follows infrastructure as code and DevOps best practices
-
----
-
-## 📞 Support
-
-- **Issues**: Report bugs and request features via GitHub Issues
-- **Documentation**: Check the `/docs` directory for detailed guides
-- **Community**: Join our discussions for help and sharing
-
-**Built with ❤️ for Professional Software Development Teams**
