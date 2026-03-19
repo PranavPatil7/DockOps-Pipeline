@@ -1,11 +1,6 @@
 # DockOps Pipeline – Professional DevOps Stack                                                                        
 ### Complete Infrastructure Automation Platform
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Ansible](https://img.shields.io/badge/ansible-2.9+-red.svg)
-![Docker](https://img.shields.io/badge/docker-20.10+-blue.svg)
-![Security](https://img.shields.io/badge/security-hardened-green.svg)
-
 ---
 
 ## 🌟 Overview
@@ -582,32 +577,3 @@ Monitor key metrics:
 
 ---
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these guidelines:
-
-### Development Workflow
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Test your changes** with a development environment
-4. **Follow security guidelines** (no hardcoded secrets)
-5. **Submit a pull request** with detailed description
-
-### Security Guidelines
-
-🚨 **Critical**: Never commit real credentials or configurations
-
-- Always use template files with placeholders
-- Test with dummy data only
-- Use Ansible Vault for any secrets
-- Document security implications of changes
-
-### Code Standards
-
-- Use descriptive variable names
-- Comment complex configurations
-- Follow Ansible best practices
-- Include error handling
-
----
